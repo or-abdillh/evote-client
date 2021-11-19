@@ -1,5 +1,6 @@
 <template>
   <h1 class="text-center">Evote App : {{ counter.count }}</h1>
+  <router-view></router-view>
 </template>
 
 <script setup>
