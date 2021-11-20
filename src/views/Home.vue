@@ -63,6 +63,7 @@
                </div>
             </template>
          </SectionCard>
+         <!-- End of Profile information -->
       </div>
    </section>
 </template>
