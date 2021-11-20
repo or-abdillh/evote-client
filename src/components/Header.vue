@@ -1,5 +1,5 @@
 <template>
-   <header>
+   <header class="fixed left-0 right-0 top-0">
       <div class="header-wrapper">
          <span>
             <img src="/logo.png" width="55" />

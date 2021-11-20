@@ -56,7 +56,7 @@
 
 <style scoped>
    .home-wrapper {
-      @apply mt-3 px-3 py-2;
+      @apply mt-16 px-3 py-2;
    }
    
    .home-wrapper p {
