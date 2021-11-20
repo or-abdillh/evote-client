@@ -46,6 +46,23 @@
             </template>
          </SectionCard>
          <!-- End of main Feature -->
+         <!-- Profile information -->
+         <SectionCard borderColor="border-blue-500">
+            <template v-slot:card-content>
+               <div class="flex items-center gap-4">
+                  <!-- Thumbnail -->
+                  <span>
+                     <img src="/profile.jpg" class="rounded-full" width="80" />
+                  </span>
+                  <!-- Personal Profile -->
+                  <div class="text-left">
+                     <strong>Fulan bin Fulan</strong>
+                     <p>Mahasiswa</p>
+                     <p>Belum melakukan vote</p>
+                  </div>
+               </div>
+            </template>
+         </SectionCard>
       </div>
    </section>
 </template>
