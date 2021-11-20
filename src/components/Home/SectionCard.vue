@@ -8,7 +8,7 @@
 
 <style scoped>
    .section-card-wrapper {
-      @apply text-center bg-gray-50 px-4 py-3 rounded-lg shadow border-l-8;
+      @apply text-center bg-gray-50 mb-4 px-5 py-4 rounded-lg shadow border-l-8;
    }
 </style>
 
