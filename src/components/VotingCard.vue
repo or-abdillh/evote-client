@@ -6,6 +6,26 @@
    .voting-card p {
       font-size: .55rem;
    }
+   
+   .dropdown {
+      @apply mt-8 duration-300 text-left bg-gray-200 p-3 rounded-lg;
+   }
+   
+   .dropdown input[type=password]::placeholder {
+      font-size: .7rem;
+   }
+   
+   @keyframes spinner {
+      from {
+         transform: rotate(0deg);
+      } to {
+         transform: rotate(360deg);
+      }
+   }
+   
+   .spinner {
+      animation: spinner 1s infinite;
+   }
 </style>
 
 <template>
@@ -36,10 +56,27 @@
                </div>
             </div>
             <!-- Action button -->
-            <button type="button" :class="isEven(cardNumber) ? 'bg-blue-500' : 'bg-green-500'" class="btn mt-5 text-gray-50">
+            <button  @click="dropDown = !dropDown" type="button" :class="isEven(cardNumber) ? 'bg-blue-500' : 'bg-green-500 ring-green-400'" class="btn mt-5 text-gray-50">
                Vote
-               <i class="text-xs fa fa-chevron-right"></i>
+               <i class="duration-300 text-xs fa" :class="dropDown ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </button>
+            <!-- Dropdown element for confirm -->
+            <div class="dropdown" v-if="dropDown">
+               <small>Konfirmasi pilihan anda</small>
+               <input class="text-sm mt-2 p-2 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan kata sandi anda"/>
+               <button @click="btnConfirm" :class="isEven(cardNumber) ? 'bg-blue-600' : 'bg-green-600 ring-green-400'" class="btn text-gray-50 mt-3">
+                  <!-- Default state -->
+                  <span v-if="!isProcess && !isSuccess" class="text-xs">Confirm</span>
+                  <!-- Process state -->
+                  <span v-if="isProcess && !isSuccess" class="spinner text-xs">
+                     <i class="text-xs fa fa-spinner"></i>
+                  </span>
+                  <!-- Success state -->
+                  <span v-if="isSuccess && !isProcess" class="text-xs">
+                     <i class="text-xs fa fa-check"></i>
+                  </span>
+               </button>
+            </div>
          </section>
       </template>
    </SectionCard>
@@ -47,6 +84,7 @@
 
 <script setup>
    import SectionCard from './SectionCard.vue'
+   import { ref } from 'vue'
    //Define props
    const props = defineProps({
       cardNumber: {
@@ -54,6 +92,22 @@
          default: 1
       }
    })
+   
+   //Handler anmation for button
+   const isProcess = ref(false)
+   const isSuccess = ref(false)
+   const btnConfirm = () => {
+      setTimeout(() => {
+         [ isProcess.value, isSuccess.value ] = [ true, false ]
+         
+         setTimeout(() => {
+            [ isProcess.value, isSuccess.value ] = [ false, true ]
+         }, 5000)
+      }, 300)
+   }
+   
+   //Dropdown animation
+   const dropDown = ref(false)
    
    //Handler to cek cardNumber is even ?
    const isEven = num => num % 2 === 0 ? true : false
