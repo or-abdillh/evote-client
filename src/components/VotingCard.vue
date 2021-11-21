@@ -83,8 +83,13 @@
 </template>
 
 <script setup>
-   import SectionCard from './SectionCard.vue'
    import { ref } from 'vue'
+   import { useTextAlert } from '../stores/textAlert'
+   import SectionCard from './SectionCard.vue'
+   
+   //Instance Stores
+   const Alert = useTextAlert()
+   
    //Define props
    const props = defineProps({
       cardNumber: {
@@ -92,6 +97,9 @@
          default: 1
       }
    })
+   
+   //Define Emits
+   const emits = defineEmits(['processDone', 'statusOk', 'statusFail'])
    
    //Handler anmation for button
    const isProcess = ref(false)
@@ -102,7 +110,10 @@
          
          setTimeout(() => {
             [ isProcess.value, isSuccess.value ] = [ false, true ]
-         }, 5000)
+            emits('processDone')
+            emits('statusOk')
+            //Alert.inputText('Maaf, anda telah melakukan vote sebelumnya')
+         }, 2000)
       }, 300)
    }
    

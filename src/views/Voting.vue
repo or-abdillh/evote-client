@@ -1,4 +1,4 @@
-<style scoped>
+   <style scoped>
    .voting-wrapper {
       @apply mt-16 px-3 py-2;
    }
@@ -27,14 +27,22 @@
          <div class="voting-card-wrapper">
             <template v-for="(card, index) in 4" :key="index">
                <!-- Voting card -->
-               <VotingCard :cardNumber="index + 1"></VotingCard>
+               <VotingCard @statusOk="successModal = true" @statusFail="successModal = false" @process-done="showModal = !showModal" :cardNumber="index + 1"></VotingCard>
             </template>
          </div>
       </div>
    </section>
+   <!-- For Modal -->
+   <Modal v-if="showModal" :successModal="successModal"></Modal>
 </template>
 
 <script setup>
+   import { ref } from 'vue'
    import SectionCard from '../components/SectionCard.vue'
    import VotingCard from '../components/VotingCard.vue'
+   import Modal from '../components/Modal.vue'
+   
+   //Handler for Modal
+   const showModal = ref(false)
+   const successModal = ref(null)
 </script>
