@@ -29,10 +29,10 @@ body {
 /* Animation for SectionCard */
 @keyframes show-animation {
    from {
-      transform: translateY(100%) scale(.65);
+      transform: translateX(-100%) scale(.65);
       opacity: .65;
    } to {
-      transform: translateY(0) scale(1);
+      transform: translateX(0) scale(1);
       opacity: 1;
    }
 }

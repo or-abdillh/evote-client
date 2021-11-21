@@ -1,5 +1,5 @@
 <template>
-   <header class="fixed left-0 right-0 top-0">
+   <header class="header">
       <div class="header-wrapper">
          <span>
             <img src="/logo.png" width="55" />
@@ -12,6 +12,9 @@
 </template>
 
 <style scoped>
+   .header {
+      @apply fixed left-0 right-0 top-0 z-40;   
+   }
    
    .header-wrapper {
       @apply w-full px-3 py-2 flex items-center gap-2;
