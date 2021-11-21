@@ -14,18 +14,6 @@
    .dropdown input[type=password]::placeholder {
       font-size: .7rem;
    }
-   
-   @keyframes spinner {
-      from {
-         transform: rotate(0deg);
-      } to {
-         transform: rotate(360deg);
-      }
-   }
-   
-   .spinner {
-      animation: spinner 1s infinite;
-   }
 </style>
 
 <template>
