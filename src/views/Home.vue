@@ -52,7 +52,7 @@
                <div class="flex items-center gap-4">
                   <!-- Thumbnail -->
                   <span>
-                     <img src="/profile.jpg" class="rounded-full" width="80" />
+                     <img src="/profile.jpg" class="rounded-full" width="75" />
                   </span>
                   <!-- Personal Profile -->
                   <div class="text-left">
