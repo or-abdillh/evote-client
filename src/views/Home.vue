@@ -1,3 +1,17 @@
+<style scoped>
+   .home-wrapper {
+      @apply mt-16 px-3 py-2;
+   }
+   
+   .home-wrapper p {
+      @apply text-xs;
+   }
+   
+   .home-wrapper strong {
+      @apply text-sm;
+   }
+</style>
+
 <template>
    <section>
       <div class="home-wrapper">
@@ -33,7 +47,7 @@
                <!-- Action button -->
                <div>
                   <!-- Go to vote page -->
-                  <button type="button" class="btn mb-3 text-gray-50 bg-blue-500">
+                  <button @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
                      Next
                      <i class="text-xs fa fa-chevron-right"></i>
                   </button>
@@ -69,19 +83,16 @@
 </template>
 
 <script setup>
-   import SectionCard from '../components/Home/SectionCard.vue'
+   import { useRouter } from 'vue-router'
+   import SectionCard from '../components/SectionCard.vue'
+   
+   //Routes
+   const router = useRouter()
+   
+   //Navigation handler to voting view
+   const nextButtton = () => {
+      setTimeout(() => {
+         router.push({ name: 'voting' })
+      }, 500)
+   }
 </script>
-
-<style scoped>
-   .home-wrapper {
-      @apply mt-16 px-3 py-2;
-   }
-   
-   .home-wrapper p {
-      @apply text-xs;
-   }
-   
-   .home-wrapper strong {
-      @apply text-sm;
-   }
-</style>

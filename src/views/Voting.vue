@@ -1,0 +1,3 @@
+<template>
+   voting pages
+</template>
