@@ -8,7 +8,7 @@
    }
    
    .dropdown {
-      @apply mt-8 duration-300 text-left bg-gray-200 p-3 rounded-lg;
+      @apply mt-8 duration-300 text-left bg-gray-100 p-3 rounded-lg;
    }
    
    .dropdown input[type=password]::placeholder {
@@ -63,14 +63,18 @@
             <!-- Dropdown element for confirm -->
             <div class="dropdown" v-if="dropDown">
                <small>Konfirmasi pilihan anda</small>
-               <input class="text-sm mt-2 p-2 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan kata sandi anda"/>
+
+               <input class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan kata sandi anda"/>
+
                <button @click="btnConfirm" :class="isEven(cardNumber) ? 'bg-blue-600' : 'bg-green-600 ring-green-400'" class="btn text-gray-50 mt-3">
                   <!-- Default state -->
                   <span v-if="!isProcess && !isSuccess" class="text-xs">Confirm</span>
+
                   <!-- Process state -->
                   <span v-if="isProcess && !isSuccess" class="spinner text-xs">
                      <i class="text-xs fa fa-spinner"></i>
                   </span>
+                  
                   <!-- Success state -->
                   <span v-if="isSuccess && !isProcess" class="text-xs">
                      <i class="text-xs fa fa-check"></i>
