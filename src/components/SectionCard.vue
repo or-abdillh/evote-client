@@ -1,5 +1,5 @@
 <template>
-   <section>
+   <section class="show-animation">
       <div :class="borderColor" class="section-card-wrapper">
          <slot name="card-content"></slot>
       </div>
