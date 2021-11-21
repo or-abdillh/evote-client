@@ -52,7 +52,7 @@
                      <i class="text-xs fa fa-chevron-right"></i>
                   </button>
                   <!-- Logout -->
-                  <button type="button" class="btn ring-gray-300 bg-gray-200">
+                  <button @click="btnlogout" type="button" class="btn ring-gray-300 bg-gray-200">
                      Logout
                      <i class="text-xs fas fa-sign-out-alt"></i>
                   </button>
@@ -93,6 +93,13 @@
    const nextButtton = () => {
       setTimeout(() => {
          router.push({ name: 'voting' })
+      }, 500)
+   }
+   
+   //Navigation handler for logout 
+   const btnlogout = () => {
+      setTimeout(() => {
+         router.push({ name: 'login' })
       }, 500)
    }
 </script>

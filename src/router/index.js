@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Voting from '../views/Voting.vue'
-
+import Login from '../views/Login.vue'
 
 const routes = [
 	{
@@ -13,6 +13,11 @@ const routes = [
 		path: '/voting',
 		name: 'voting',
 		component: Voting
+	},
+	{
+		path: '/login',
+		name: 'login',
+		component: Login
 	}
 ]
 const router = createRouter({ history: createWebHistory(process.env.BASE_URL), routes })
