@@ -48,7 +48,6 @@
                   <strong v-if="isEventFinish">Event telah berakhir</strong>
                   <!-- Countdown Element -->
                   <p v-if="!isEventFinish" ref="countDownEl">Mon 12 dec 14:00 WITA</p>
-                  
                </div>
                <!-- Action button -->
                <div>
@@ -89,7 +88,7 @@
 </template>
 
 <script setup>
-   import { ref, onMounted } from 'vue'
+   import { ref, onMounted, watch } from 'vue'
    import { useRouter } from 'vue-router'
    import SectionCard from '../components/SectionCard.vue'
    import countDown from '../utils/countDown.js'
@@ -111,33 +110,47 @@
       }, 500)
    }
    
-   //Handler for choose the state
+//Handler for choose the state
+
    const chooseState = ( start, finish ) => {
-      const now = new Date().getTime()
       //alert(start, finish)
       //State belum dimulai
-      if ( now < start ) [ isEventStart.value, isEventFinish.value ] = [ false, false ]
+      const now = new Date().getTime()
+      //alert(now >= start && now < finish)
+      if ( now < start ) {
+         [ isEventStart.value, isEventFinish.value ] = [ false, false ]
+      }
       //State dimulai
-      else if ( now >= start && now < finish ) [ isEventStart.value, isEventFinish.value ] = [ true, false ]
+      else if ( now >= start && now < finish ) {
+         //alert('mulai')
+         [ isEventStart.value, isEventFinish.value ] = [ true, false ]
+      }
       //State berakhir
-      else [ isEventStart.value, isEventFinish.value ] = [ false, true ]
+      else {
+         //alert('akhir')
+         [ isEventStart.value, isEventFinish.value ] = [ false, true ]
+      }
    }
    
    //Check current state before mounted
-   onMounted(() => {
-      chooseState(new Date('2021 11-22 12:18:30').getTime(), new Date('2021 11-22 12:22').getTime())
-      //Hanya jalankan countDown jika isEventStart bernilai true
-      if ( isEventStart.value === true ) {
-         const interval = setInterval(() => {
-            countDown(countDownEl.value, new Date('2021 11-22 12:22').getTime(), after, interval)
-         }, 1000)
-      }
-   })
+   //Get start time and finish time
+   const eventStart = ref( new Date('2021 11-22 21:29:35').getTime() )
+   const eventFinish = ref( new Date('2021 11-22 21:30').getTime() )
    
+   setInterval(() => {
+      //alert(eventStart)
+      chooseState(eventStart.value, eventFinish.value)
+   }, 2000)
+
    //Handler for event state mulai atau belum juga berakhir
    const isEventStart = ref(false)
-   const isEventFinish = ref(false)
+   const isEventFinish = ref(true)
    const countDownEl = ref(null)
+   
+   //Jalankan countDown jika isEventSta rt true
+   const interval = setInterval(() => {
+      countDown(countDownEl.value, eventStart.value, eventFinish.value, after, interval)
+   }, 1000)
    
    //Create callbackk if countdown finish
    const after = () => {
