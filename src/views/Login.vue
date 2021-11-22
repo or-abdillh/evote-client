@@ -40,7 +40,7 @@
          <div class="input-wrapper">
             <label for="passswod">Password</label>
             <div class="flex gap-2">
-               <input v-model="formLogin.passswod" class="w-full" type="text" name="passswod" id="passswod" placeholder="Masukkan passswod anda" />
+               <input v-model="formLogin.password" class="w-full" type="text" name="passswod" id="passswod" placeholder="Masukkan passswod anda" />
                <!-- Show or hide passswod -->
                <button type="button" class="bg-gray-500 px-3 rounded-lg text-gray-50">
                   <i class="fa fa-eye-slash"></i>
@@ -52,7 +52,7 @@
          <small v-if="isFail" class="duration-300 text-red-600">Username atau kata sandi salah</small>
          
          <!-- Button submit -->
-         <button :disabled="!isFormLoginValid" @click="btnLogin" type="submit" class="btn bg-blue-500 text-gray-50 mt-6">
+         <button :disabled="!isValidForm" @click="btnLogin" type="submit" class="btn bg-blue-500 text-gray-50 mt-6">
             <!-- default state -->
             <span v-if="!isProcess && !isSuccess" class="text-sm">
                Login
@@ -79,16 +79,22 @@
 </template>
 
 <script setup>
-   import { ref, reactive, computed } from 'vue'
+   import { ref, reactive, watch } from 'vue'
    import { useRouter } from 'vue-router'
    
    //Instance 
    const router = useRouter()
    
    //Validation and util for show or hide password
+   const isValidForm = ref(false)
    const formLogin = reactive({
       username: '',
       password: ''
+   })
+   
+   watch(formLogin, () => {
+      if ( formLogin.username === '' || formLogin.password === '' ) isValidForm.value = false
+      else isValidForm.value = true
    })
    
    //Handler for login progress
