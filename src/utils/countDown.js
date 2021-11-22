@@ -1,7 +1,10 @@
 //Handler for countdown
-const countDown = (el, to) => {
+const countDown = (el, to, cb, interval) => {
    // el => element to print result
    // to => UNIX time target
+   // cb => callback if countdown finish
+   // interval => setInterval block
+   
    const now = new Date().getTime()
    const distance = to - now
    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -10,6 +13,11 @@ const countDown = (el, to) => {
    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
    //Print
    el.innerHTML = `${ days }d ${ hours }h ${ minutes }m ${ seconds }s`
-}
+   
+   if ( days === 0 && hours === 0 && minutes === 0 && seconds === 0 ) {
+      clearInterval(interval)
+      cb()
+   }
+}  
 
 export default countDown
