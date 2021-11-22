@@ -38,12 +38,12 @@
          </div>
          <!-- passswod -->
          <div class="input-wrapper">
-            <label for="passswod">Password</label>
+            <label for="password">Password</label>
             <div class="flex gap-2">
-               <input v-model="formLogin.password" class="w-full" type="text" name="passswod" id="passswod" placeholder="Masukkan passswod anda" />
+               <input v-model="formLogin.password" class="w-full" :type="showPassword ? 'text' : 'password'" name="password" id="password" placeholder="Masukkan passswod anda" />
                <!-- Show or hide passswod -->
-               <button type="button" class="bg-gray-500 px-3 rounded-lg text-gray-50">
-                  <i class="fa fa-eye-slash"></i>
+               <button @click="showPassword = !showPassword" type="button" class="bg-gray-500 px-3 rounded-lg text-gray-50 focus:ring-2 ring-blue-100">
+                  <i class="duration-300 fa" :class="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
                </button>
             </div>
          </div>
@@ -85,7 +85,7 @@
    //Instance 
    const router = useRouter()
    
-   //Validation and util for show or hide password
+   //Validation form login
    const isValidForm = ref(false)
    const formLogin = reactive({
       username: '',
@@ -120,4 +120,8 @@
          }, 2000)
       }, 500)
    }
+   
+   //Handler for Show and hide password
+   const showPassword = ref(false)
+   
 </script>
