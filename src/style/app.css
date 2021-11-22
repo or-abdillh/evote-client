@@ -27,7 +27,7 @@ body {
 }
 
 .btn:disabled {
-   @apply bg-opacity-75;
+   @apply bg-opacity-50 ring-2 ring-red-100;
 }
 
 /* Animation for SectionCard */

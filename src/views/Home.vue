@@ -40,14 +40,17 @@
                
                <!-- Countdown -->
                <div class="mb-6">
-                  <strong>Akan berakhir dalam</strong>
-                  <p>04 : 45 : 44</p>
+                  <!-- State event sudah dimulai -->
+                  <strong v-if="isEventStart">Akan berakhir dalam</strong>
+                  <!-- State event belum mulai -->
+                  <strong v-else>Akan dimulai pada</strong>
+                  <!-- Countdown Element -->
+                  <p ref="countDownEl">Mon 12 dec 14:00 WITA</p>
                </div>
-               
                <!-- Action button -->
                <div>
                   <!-- Go to vote page -->
-                  <button @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
+                  <button :disabled="!isEventStart" @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
                      Next
                      <i class="text-xs fa fa-chevron-right"></i>
                   </button>
@@ -83,8 +86,10 @@
 </template>
 
 <script setup>
+   import { ref } from 'vue'
    import { useRouter } from 'vue-router'
    import SectionCard from '../components/SectionCard.vue'
+   import countDown from '../utils/countDown.js'
    
    //Routes
    const router = useRouter()
@@ -101,5 +106,16 @@
       setTimeout(() => {
          router.push({ name: 'login' })
       }, 500)
+   }
+   
+   //Handler for event state mulai atau belum
+   const isEventStart = ref(false)
+   const countDownEl = ref(null)
+   
+   //Hanya jalankan countDown jika isEventStart bernilai true
+   if ( isEventStart.value ) {
+      setInterval(() => {
+         countDown(countDownEl.value, new Date('2021 11-27').getTime())
+      }, 1000)
    }
 </script>
