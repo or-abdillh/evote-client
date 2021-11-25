@@ -4,7 +4,7 @@
    }
    
    .modal-wrapper {
-      @apply w-8/12 text-center bg-gray-50 px-5 py-4 rounded-lg shadow;
+      @apply w-8/12 md:w-5/12 lg:w-3/12 text-center bg-gray-50 px-5 py-4 md:py-6 lg:py-8 rounded-lg shadow;
    }
    
    .modal-icon {

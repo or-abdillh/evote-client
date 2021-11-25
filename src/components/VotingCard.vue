@@ -1,4 +1,8 @@
 <style scoped>
+	.voting-card {
+		@apply flex justify-between mt-4 md:justify-center md:gap-16 lg:gap-20;
+	}
+
    .voting-card strong {
       font-size: .75rem;
    }
@@ -8,7 +12,7 @@
    }
    
    .dropdown {
-      @apply mt-8 duration-300 text-left bg-gray-100 p-3 rounded-lg;
+      @apply mt-8 duration-300 text-left bg-gray-100 p-3 rounded-lg lg:px-8;
    }
    
    .dropdown input[type=password]::placeholder {
@@ -19,13 +23,13 @@
 <template>
    <SectionCard :borderColor="isEven(cardNumber) ? 'border-blue-500' : 'border-green-500'">
       <template v-slot:card-content>
-         <section class="voting-card">
+         <section>
             <!-- Nomor Paslon here -->
-            <span class="bg-gray-100 block w-full rounded text-gray-600 py-1">
+            <span class="bg-gray-100 block w-full lg:w-10/12 lg:mx-auto rounded text-gray-600 py-1">
                {{ cardNumber }}
             </span>
             <!-- Profile paslon here -->
-            <div class="flex justify-between mt-4">
+            <div class="voting-card">
                <!-- Calon ketua umum -->
                <div>
                   <img src="/profile.jpg" width="85" class="mx-auto rounded-full" />
@@ -52,9 +56,9 @@
             <div class="dropdown" v-if="dropDown">
                <small>Konfirmasi pilihan anda</small>
 
-               <input class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan kata sandi anda"/>
+               <input v-model="password" class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan kata sandi anda"/>
 
-               <button @click="btnConfirm" :class="isEven(cardNumber) ? 'bg-blue-600' : 'bg-green-600 ring-green-400'" class="btn text-gray-50 mt-3">
+               <button :disabled="password === ''" @click="btnConfirm" :class="isEven(cardNumber) ? 'bg-blue-600' : 'bg-green-600 ring-green-400'" class="btn-sm w-full text-gray-50 mt-3">
                   <!-- Default state -->
                   <span v-if="!isProcess && !isSuccess" class="text-xs">Confirm</span>
 
@@ -104,10 +108,14 @@
             [ isProcess.value, isSuccess.value ] = [ false, true ]
             emits('processDone')
             emits('statusOk')
+            //emits('statusFail')
             //Alert.inputText('Maaf, anda telah melakukan vote sebelumnya')
          }, 2000)
       }, 300)
    }
+
+   //Confirm vote handler
+   const password = ref('')
    
    //Dropdown animation
    const dropDown = ref(false)

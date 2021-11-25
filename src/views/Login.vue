@@ -1,6 +1,6 @@
 <style scoped>
    .login-wrapper {
-      @apply px-3 py-2 mt-20;
+      @apply px-5 md:px-8 py-2 mt-20 lg:w-5/12 lg:mx-auto;
    }
    
    .form {

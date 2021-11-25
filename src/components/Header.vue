@@ -1,12 +1,14 @@
 <template>
    <header class="header">
       <div class="header-wrapper">
-         <span>
-            <img src="/logo.png" width="55" />
-         </span>
-         <span>
-            <h1 class="text-gray-50 font-semibold">EVOTING HIMA TI</h1>
-         </span>
+	      <div class="header-brand">
+	         <span>
+	            <img src="/logo.png" width="55" />
+	         </span>
+	         <span>
+	            <h1 class="text-gray-50 font-semibold">EVOTING HIMA TI</h1>
+	         </span>
+         </div>
       </div>
    </header>
 </template>
@@ -17,8 +19,11 @@
    }
    
    .header-wrapper {
-      @apply w-full px-3 py-2 flex items-center gap-2;
+      @apply w-full px-5 md:px-8 py-2 flex items-center gap-2;
       background: var(--secondary);
    }
-   
+
+   .header-brand {
+   	@apply flex items-center lg:justify-center gap-2 lg:w-3/12 lg:mx-auto;
+   }
 </style>

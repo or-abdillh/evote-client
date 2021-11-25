@@ -1,6 +1,6 @@
 <style scoped>
    .home-wrapper {
-      @apply mt-16 px-3 py-2;
+      @apply mt-16 px-5 md:px-8 py-2 lg:mt-20 lg:w-8/12 lg:mx-auto;
    }
    
    .home-wrapper p {
@@ -68,9 +68,9 @@
          <!-- Profile information -->
          <SectionCard borderColor="border-blue-500">
             <template v-slot:card-content>
-               <div class="flex items-center gap-4">
+               <div class="flex items-center gap-4 md:justify-center md:w-6/12 mx-auto">
                   <!-- Thumbnail -->
-                  <span>
+                  <span class="md:mr-3">
                      <img src="/profile.jpg" class="rounded-full" width="75" />
                   </span>
                   <!-- Personal Profile -->
@@ -91,7 +91,7 @@
    import { ref, onMounted, watch } from 'vue'
    import { useRouter } from 'vue-router'
    import SectionCard from '../components/SectionCard.vue'
-   import countDown from '../utils/countDown.js'
+   import countDown from '../helper/countDown.js'
    
    //Routes
    const router = useRouter()
@@ -135,7 +135,7 @@
    //Check current state before mounted
    //Get start time and finish time
    const eventStart = ref( new Date('2021 11-22 21:29:35').getTime() )
-   const eventFinish = ref( new Date('2021 11-22 21:30').getTime() )
+   const eventFinish = ref( new Date('2021 11-29 21:30').getTime() )
    
    setInterval(() => {
       //alert(eventStart)

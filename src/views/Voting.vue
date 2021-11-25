@@ -1,6 +1,6 @@
    <style scoped>
    .voting-wrapper {
-      @apply mt-16 px-3 py-2;
+      @apply mt-16 px-3 py-2 lg:mt-20 lg:w-8/12 lg:mx-auto;
    }
    
    .voting-wrapper strong {
