@@ -90,11 +90,13 @@
 <script setup>
    import { ref, onMounted, watch } from 'vue'
    import { useRouter } from 'vue-router'
+   import axios from '../API/Axios.js'
    import SectionCard from '../components/SectionCard.vue'
    import countDown from '../helper/countDown.js'
    
    //Routes
    const router = useRouter()
+   axios.post('general/login',{ username: 'sandhika', password: 'sandhika' }, alert)
    
    //Navigation handler to voting view
    const nextButtton = () => {
