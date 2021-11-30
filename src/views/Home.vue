@@ -19,7 +19,7 @@
          <SectionCard borderColor="border-blue-500">
             <template v-slot:card-content>
                <strong>Selamat Datang</strong>
-               <p>Pemilihan Ketua Umum dan Wakil Ketua Umum HIMA TI Polihasnur Tahun 2021/2022</p>
+               <p>{{ eventTitle }}</p>
             </template>
          </SectionCard>
          <!-- End of Wellcome --> 
@@ -88,28 +88,41 @@
 </template>
 
 <script setup>
-   import { ref, onMounted, watch, reactive } from 'vue'
-   import { useRouter } from 'vue-router'
-   import SectionCard from '../components/SectionCard.vue'
-   import countDown from '../helper/countDown.js'
-   import http from '../API/http.js'
+    import { ref, onMounted, watch, reactive } from 'vue'
+    import { useRouter } from 'vue-router'
+    import SectionCard from '../components/SectionCard.vue'
+    import countDown from '../helper/countDown.js'
+    import http from '../API/http.js'
 
-   //Render data from API
+    //Routes
+    const router = useRouter()
 
-  const profile = ref({
-  	fullname: 'Fulan bin Fulan',
-  	job_name: 'Dosen',
-  	status_vote: 0
-  })
+    //Render data profile from API
+
+	const profile = ref({
+	fullname: 'Fulan bin Fulan',
+	job_name: 'Dosen',
+	status_vote: 0
+	})
+
+    //Get start time, finish time and get Event title
+	const eventStart = ref(0)
+	const eventFinish = ref(0)
+	const eventTitle = ref('Wellcome Notes')
+
+    onMounted(() => {
+    //Get profile
+    	http.get('general/profile', data => {
+	   	 	profile.value = data.response
+		})
+	//Get event
+		http.get('general/event', data => {
+			eventStart.value = data.response.event_start_at
+			eventFinish.value = data.response.event_finish_at
+			eventTitle.value = data.response.event_title
+		})
+    })
    
-   onMounted(() => {
-   	http.get('general/profile', data => {
-   		profile.value = data.response
-   	})
-   })
-   
-   //Routes
-   const router = useRouter()
    
    //Navigation handler to voting view
    const nextButtton = () => {
@@ -147,10 +160,6 @@
       }
    }
    
-   //Check current state before mounted
-   //Get start time and finish time
-   const eventStart = ref( new Date('2021 11-22 21:29:35').getTime() )
-   const eventFinish = ref( new Date('2021 11-29 21:30').getTime() )
    
    setInterval(() => {
       //alert(eventStart)
