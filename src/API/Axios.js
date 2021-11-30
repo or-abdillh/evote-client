@@ -5,7 +5,7 @@ const baseURL = 'http://localhost:8080'
 //DEFAULT HEADERS
 const headers = {
 	'content-type': 'application/json',
-	'token': 'This is Token'
+	'token': localStorage.getItem('$evote-token')
 }
 
 export default {

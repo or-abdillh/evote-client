@@ -108,7 +108,6 @@
    
       //Handler for login API
       const afterLogin = (response, success) => {
-      console.log('start')
 		setTimeout(() => {
 			//Process state
 			[ isProcess.value, isSuccess.value ] = [ true, false ]
@@ -119,7 +118,10 @@
 				   
 				   //Success state
 				   [ isProcess.value, isSuccess.value ] = [ false, true ]
-				   console.log(response)
+
+				  //Save token to localStorage
+				  localStorage.setItem('$evote-token', response.response.TOKEN)
+				 
 				   //Push to Home
 				   setTimeout(() => {
 				      router.push({ name: 'home' })
