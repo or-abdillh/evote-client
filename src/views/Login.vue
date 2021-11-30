@@ -81,6 +81,7 @@
 <script setup>
    import { ref, reactive, watch, onMounted } from 'vue'
    import { useRouter } from 'vue-router'
+   import login from '../API/login.js'
    
    //Instance 
    const router = useRouter()
@@ -104,22 +105,37 @@
    
    //Handler for submit form login
    const btnLogin = () => {
-      setTimeout(() => {
-         //Process state
-         [ isProcess.value, isSuccess.value ] = [ true, false ]
-         
-         setTimeout(() => {
-            //Fail state
-            [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
-            //Success state
-            [ isProcess.value, isSuccess.value ] = [ false, true ]
-            //Push to Home
-            setTimeout(() => {
-               router.push({ name: 'home' })
-            }, 500)
-         }, 2000)
-      }, 500)
-   }
+   
+      //Handler for login API
+      const afterLogin = (response, success) => {
+      console.log('start')
+		setTimeout(() => {
+			//Process state
+			[ isProcess.value, isSuccess.value ] = [ true, false ]
+			          
+			//Response success
+			if ( success ) {
+				setTimeout(() => {
+				   
+				   //Success state
+				   [ isProcess.value, isSuccess.value ] = [ false, true ]
+				   console.log(response)
+				   //Push to Home
+				   setTimeout(() => {
+				      router.push({ name: 'home' })
+				   }, 500)
+				}, 2000)
+			} else {
+				setTimeout(() => {
+					 //Fail state
+				   [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
+				}, 2000)
+			}         
+	       }, 300)
+		}
+
+		login(formLogin, afterLogin)
+	}
    
    //Handler for Show and hide password
    const showPassword = ref(false)
