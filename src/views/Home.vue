@@ -75,9 +75,9 @@
                   </span>
                   <!-- Personal Profile -->
                   <div class="text-left">
-                     <strong>Fulan bin Fulan</strong>
-                     <p class="font-bold text-gray-600">Mahasiswa</p>
-                     <p class="text-gray-600">Belum melakukan vote</p>
+                     <strong>{{ profile.fullname }}</strong>
+                     <p class="font-bold text-gray-600">{{ profile.job_name }}</p>
+                     <p class="text-gray-600">{{ profile.status_vote === 1 ? 'Sudah melakukan voting' : 'Belum melakukan voting' }}</p>
                   </div>
                </div>
             </template>
@@ -88,10 +88,25 @@
 </template>
 
 <script setup>
-   import { ref, onMounted, watch } from 'vue'
+   import { ref, onMounted, watch, reactive } from 'vue'
    import { useRouter } from 'vue-router'
    import SectionCard from '../components/SectionCard.vue'
    import countDown from '../helper/countDown.js'
+   import http from '../API/http.js'
+
+   //Render data from API
+
+  const profile = ref({
+  	fullname: 'Fulan bin Fulan',
+  	job_name: 'Dosen',
+  	status_vote: 0
+  })
+   
+   onMounted(() => {
+   	http.get('general/profile', data => {
+   		profile.value = data.response
+   	})
+   })
    
    //Routes
    const router = useRouter()

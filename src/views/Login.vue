@@ -105,7 +105,6 @@
    
    //Handler for submit form login
    const btnLogin = () => {
-   
       //Handler for login API
       const afterLogin = (response, success) => {
 		setTimeout(() => {
@@ -113,14 +112,14 @@
 			[ isProcess.value, isSuccess.value ] = [ true, false ]
 			          
 			//Response success
+	        localStorage.setItem('$evote-token', response.response.TOKEN)
 			if ( success ) {
+			    //Save token to localStorage
+		        
 				setTimeout(() => {
 				   
 				   //Success state
-				   [ isProcess.value, isSuccess.value ] = [ false, true ]
-
-				  //Save token to localStorage
-				  localStorage.setItem('$evote-token', response.response.TOKEN)
+				   [ isProcess.value, isSuccess.value ] = [ false, true ] 
 				 
 				   //Push to Home
 				   setTimeout(() => {
