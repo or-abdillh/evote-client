@@ -76,8 +76,8 @@
                   <!-- Personal Profile -->
                   <div class="text-left">
                      <strong>Fulan bin Fulan</strong>
-                     <p>Mahasiswa</p>
-                     <p>Belum melakukan vote</p>
+                     <p class="font-bold text-gray-600">Mahasiswa</p>
+                     <p class="text-gray-600">Belum melakukan vote</p>
                   </div>
                </div>
             </template>
