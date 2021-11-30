@@ -31,7 +31,7 @@
                <div class="mb-6">
                   <span>
                      <strong>
-                        2
+                        {{ count }}
                         <i class="text-xs text-gray-700 fas fa-user-friends"></i>
                      </strong> 
                   </span>
@@ -105,10 +105,11 @@
 	status_vote: 0
 	})
 
-    //Get start time, finish time and get Event title
+    //Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
 	const eventStart = ref(0)
 	const eventFinish = ref(0)
 	const eventTitle = ref('Wellcome Notes')
+	const count = ref(0)
 
     onMounted(() => {
     //Get profile
@@ -117,9 +118,11 @@
 		})
 	//Get event
 		http.get('general/event', data => {
-			eventStart.value = data.response.event_start_at
-			eventFinish.value = data.response.event_finish_at
-			eventTitle.value = data.response.event_title
+			const res = data.response[0]
+			eventStart.value = res.event_start_at
+			eventFinish.value = res.event_finish_at
+			eventTitle.value = res.event_title
+			count.value = res.count
 		})
     })
    
