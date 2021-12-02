@@ -19,7 +19,7 @@
          <SectionCard borderColor="border-blue-500">
             <template v-slot:card-content>
                <strong>Halaman Voting</strong>
-               <p>Pemilihan Ketua Umum dan Wakil Ketua Umum HIMA TI Polihasnur Tahun 2021/2022</p>
+               <p>{{ store.eventTitle }}</p>
             </template>
          </SectionCard>
          <!-- End of Pages Info -->
@@ -39,10 +39,14 @@
 
 <script setup>
    import { ref, reactive, onMounted } from 'vue'
+   import { useEventTitle } from '../stores/eventTitle'
    import SectionCard from '../components/SectionCard.vue'
    import VotingCard from '../components/VotingCard.vue'
    import Modal from '../components/Modal.vue'
    import http from '../API/http.js'
+
+   //Init store
+   const store = useEventTitle()
    
    //Handler for Modal
    const showModal = ref(false)

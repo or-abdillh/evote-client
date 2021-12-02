@@ -19,7 +19,7 @@
          <SectionCard borderColor="border-blue-500">
             <template v-slot:card-content>
                <strong>Selamat Datang</strong>
-               <p>{{ eventTitle }}</p>
+               <p>{{ store.eventTitle }}</p>
             </template>
          </SectionCard>
          <!-- End of Wellcome --> 
@@ -90,6 +90,7 @@
 <script setup>
     import { ref, onMounted, watch, reactive } from 'vue'
     import { useRouter } from 'vue-router'
+    import { useEventTitle } from '../stores/eventTitle'
     import SectionCard from '../components/SectionCard.vue'
     import countDown from '../helper/countDown.js'
     import http from '../API/http.js'
@@ -97,6 +98,9 @@
     //Routes
     const router = useRouter()
 
+	//Init store
+	const store = useEventTitle()
+	
     //Render data profile from API
 
 	const profile = ref({
@@ -121,7 +125,7 @@
 			const res = data.response[0]
 			eventStart.value = res.event_start_at
 			eventFinish.value = res.event_finish_at
-			eventTitle.value = res.event_title
+			store.setEventTitle(res.event_title)
 			count.value = res.count
 		})
     })
