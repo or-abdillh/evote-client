@@ -32,17 +32,17 @@
             <div class="voting-card">
                <!-- Calon ketua umum -->
                <div>
-                  <img src="/profile.jpg" width="85" class="mx-auto rounded-full" />
+                  <img :src="candidate.chairman_image" width="85" class="mx-auto rounded-full" />
                   <span class="block">
-                     <strong>Fulan bin Fulan</strong>
+                     <strong>{{ candidate.chairman_name }}</strong>
                      <p>Calon Ketua Umum</p>
                   </span>
                </div>
                <!-- Calon wakil ketua umum -->
                <div>
-                  <img src="/profile.jpg" width="85" class="mx-auto rounded-full" />
+                  <img :src="candidate.vice_chairman_image" width="85" class="mx-auto rounded-full" />
                   <span class="block">
-                     <strong>Fulan bin Fulan</strong>
+                     <strong>{{ candidate.vice_chairman_name }}</strong>
                      <p>Calon Wakil Ketua Umum</p>
                   </span>
                </div>
@@ -56,7 +56,7 @@
             <div class="dropdown" v-if="dropDown">
                <small>Konfirmasi pilihan anda</small>
 
-               <input v-model="password" class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan kata sandi anda"/>
+               <input v-model="password" class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan passcode"/>
 
                <button :disabled="password === ''" @click="btnConfirm" :class="isEven(cardNumber) ? 'bg-blue-600' : 'bg-green-600 ring-green-400'" class="btn-sm w-full text-gray-50 mt-3">
                   <!-- Default state -->
@@ -91,6 +91,9 @@
       cardNumber: {
          type: Number,
          default: 1
+      },
+      candidate: {
+      	type: Object
       }
    })
    

@@ -23,11 +23,12 @@
             </template>
          </SectionCard>
          <!-- End of Pages Info -->
+         
          <!-- Voting Card Wrapper -->
          <div class="voting-card-wrapper">
-            <template v-for="(card, index) in 4" :key="index">
+            <template v-for="(candidate, index) in candidates" :key="index">
                <!-- Voting card -->
-               <VotingCard @statusOk="successModal = true" @statusFail="successModal = false" @process-done="showModal = !showModal" :cardNumber="index + 1"></VotingCard>
+               <VotingCard :candidate="candidate" @statusOk="successModal = true" @statusFail="successModal = false" @process-done="showModal = !showModal" :cardNumber="candidate.candidate_number"></VotingCard>
             </template>
          </div>
       </div>
@@ -37,12 +38,23 @@
 </template>
 
 <script setup>
-   import { ref } from 'vue'
+   import { ref, reactive, onMounted } from 'vue'
    import SectionCard from '../components/SectionCard.vue'
    import VotingCard from '../components/VotingCard.vue'
    import Modal from '../components/Modal.vue'
+   import http from '../API/http.js'
    
    //Handler for Modal
    const showModal = ref(false)
    const successModal = ref(null)
+
+   //Save candidates
+   const candidates = ref(null)
+	
+   //Get data from API
+   onMounted(() => {
+   	 http.get('general/candidates', data => {
+   	   candidates.value = data.response
+   	 })
+   })
 </script>
