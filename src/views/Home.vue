@@ -19,7 +19,7 @@
          <SectionCard borderColor="border-blue-500">
             <template v-slot:card-content>
                <strong>Selamat Datang</strong>
-               <p>{{ store.eventTitle }}</p>
+               <p>{{ EventTitle.eventTitle }}</p>
             </template>
          </SectionCard>
          <!-- End of Wellcome --> 
@@ -91,6 +91,7 @@
     import { ref, onMounted, watch, reactive } from 'vue'
     import { useRouter } from 'vue-router'
     import { useEventTitle } from '../stores/eventTitle'
+    import { usePasscode } from '../stores/passcode'
     import SectionCard from '../components/SectionCard.vue'
     import countDown from '../helper/countDown.js'
     import http from '../API/http.js'
@@ -99,20 +100,20 @@
     const router = useRouter()
 
 	//Init store
-	const store = useEventTitle()
+	const EventTitle = useEventTitle()
+	const EventPasscode = usePasscode()
 	
     //Render data profile from API
 
 	const profile = ref({
-	fullname: 'Fulan bin Fulan',
-	job_name: 'Dosen',
-	status_vote: 0
+		fullname: 'Fulan bin Fulan',
+		job_name: 'Dosen',
+		status_vote: 0
 	})
 
     //Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
 	const eventStart = ref(0)
 	const eventFinish = ref(0)
-	const eventTitle = ref('Wellcome Notes')
 	const count = ref(0)
 
     onMounted(() => {
@@ -125,8 +126,13 @@
 			const res = data.response[0]
 			eventStart.value = res.event_start_at
 			eventFinish.value = res.event_finish_at
-			store.setEventTitle(res.event_title)
 			count.value = res.count
+
+			//Save event title into state
+			EventTitle.setEventTitle(res.event_title)
+
+			//Save event passcode into state
+			EventPasscode.setPasscode(res.passcode)
 		})
     })
    
