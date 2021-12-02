@@ -146,9 +146,12 @@
    
    //Navigation handler for logout 
    const btnlogout = () => {
-      setTimeout(() => {
-         router.push({ name: 'login' })
-      }, 500)
+   	  //Logout from account
+   	  http.get('logout', data => {
+		setTimeout(() => {
+			router.push({ name: 'login' })
+		}, 500)
+   	  })
    }
    
 //Handler for choose the state
