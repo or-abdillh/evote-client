@@ -24,7 +24,7 @@ export default {
 			})
 	},
 	//METHOD POST
-	post( extend = '',body, callback ) {
+	post( extend = '', body, callback ) {
 		//Creaate Headers
 		const headers = {
 			'content-type': 'application/json',
