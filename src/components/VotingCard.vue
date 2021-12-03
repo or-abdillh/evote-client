@@ -133,7 +133,7 @@
          				[ isProcess.value, isSuccess.value ] = [ false, false ]
 						emits('processDone')
 						emits('statusFail')
-						Alert.inputText('Anda sudah melakukan voting sebelumnya')
+						Alert.inputText(data.response)
          			}, 2000)
          		}
          	})         	

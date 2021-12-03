@@ -52,7 +52,7 @@
                <!-- Action button -->
                <div>
                   <!-- Go to vote page -->
-                  <button :disabled="!isEventStart || profile.status_vote > 0" @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
+                  <button :disabled="!isEventStart || profile.status_vote > 0"  @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
                      Next
                      <i class="text-xs fa fa-chevron-right"></i>
                   </button>
