@@ -11,28 +11,30 @@ Evoting app for voter built using vue js 3 and tailwindcss.
 Evote is a web-based application used by voters in exercising their voting rights.
 
 ### Responsive Test
+ 
+Test via [Am I Responsive](http://ami.responsivedesign.is/)
 <img src="./src/assets/banner-2.png" width="100%" />
-- Test Via [A'm I Responsive](http://ami.responsivedesign.is)
 
 ### Languages and Tools
 - Vue JS 3
 - Tailwindcss
 - Pinia
 - Vue Router
+- Axios
+- Vite Js
 - Font Awesome 5
 - Google Fonts
-- Vite Js
-- Termux
-- Acode code editor
 - Git
 - Vercel
+- Termux
+- Acode code editor
 
 ### Demo 
 - [Evote Client - Electronic Vote System]()
 
 ### How To Start
 - Clone this repository with this command <code>git clone https://github.com/or-abdillh/evote-client.git</code>
-- Then, use this command <code>cd stock-app</code>
+- Then, use this command <code>cd evote-client</code>
 - Install all dependencies <code>npm install</code>
 - Finally run the server <code>npm run dev</code>
 - The local server running at http://localhost:3000/
