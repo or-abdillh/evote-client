@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'http://localhost:8080'
+const baseURL = 'https://dry-falls-66840.herokuapp.com'
 
 export default {
     //METHOD GET
@@ -8,7 +8,7 @@ export default {
 	//Creaate Headers
 		const headers = {
 			'content-type': 'application/json',
-			'token': localStorage.getItem('$evote-token')
+			'token': localStorage.getItem('$evote-token') || null
 		}
 		
 		axios.get(`${baseURL}/${extend}`, { headers })
@@ -28,7 +28,7 @@ export default {
 		//Creaate Headers
 		const headers = {
 			'content-type': 'application/json',
-			'token': localStorage.getItem('$evote-token')
+			'token': localStorage.getItem('$evote-token') || null
 		}
 		axios.post(`${baseURL}/${extend}`, body, { headers })
 		  .then(res => {
