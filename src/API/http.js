@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = 'https://dry-falls-66840.herokuapp.com'
+const baseURL = 'http://dry-falls-66840.herokuapp.com'
 
 export default {
     //METHOD GET
