@@ -27,7 +27,7 @@ const router = createRouter({ history: createWebHistory(process.env.BASE_URL), r
 router.beforeEach((to, next) => {
 	http.get('auth', (data, response = true) => {
 		//Auth token success
-		alert(JSON.stringify(data))
+		//alert(JSON.stringify(data))
 		if (response && to.name !== 'login') next()
 		else router.push({ name: 'login' }) //Fail 
 	})
