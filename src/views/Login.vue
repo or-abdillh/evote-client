@@ -107,7 +107,6 @@
    const btnLogin = () => {
       //Handler for login API
       const afterLogin = (response, success) => {
-         console.log(response)
 		setTimeout(() => {
 			//Process state
 			[ isProcess.value, isSuccess.value ] = [ true, false ]
