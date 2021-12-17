@@ -187,7 +187,7 @@
    const isEventFinish = ref(true)
    const countDownEl = ref(null)
    
-   //Jalankan countDown jika isEventSta rt true
+   //Jalankan countDown jika isEventStart true
    const interval = setInterval(() => {
       countDown(countDownEl.value, eventStart.value, eventFinish.value, after, interval)
    }, 1000)
