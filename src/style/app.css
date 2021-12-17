@@ -27,7 +27,7 @@ body {
 }
 
 .btn {
-	@apply lg:w-10/12 lg:mx-auto w-full ;
+	@apply w-full ;
 }
 
 .btn:disabled, .btn-sm:disabled {

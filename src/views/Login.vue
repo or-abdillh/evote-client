@@ -132,7 +132,7 @@
 				   [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
 				}, 2000)
 			}         
-	       }, 300)
+	       }, 100)
 		}
 
 		login(formLogin, afterLogin)
