@@ -15,7 +15,7 @@
       @apply mt-8 duration-300 text-left bg-gray-100 p-3 rounded-lg lg:px-8;
    }
    
-   .dropdown input[type=password]::placeholder {
+   .dropdown input[type=text]::placeholder {
       font-size: .7rem;
    }
 </style>
@@ -56,7 +56,7 @@
             <div class="dropdown" v-if="dropDown">
                <small>Konfirmasi pilihan anda</small>
 
-               <input v-model="passcode" class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="password" placeholder="Masukkan passcode"/>
+               <input v-model="passcode" class="text-sm mt-2 p-2 border-2 border-gray-300 bg-gray-50 rounded-lg w-full" type="text" placeholder="Masukkan passcode"/>
 
                <button :disabled="passcode === ''" @click="btnConfirm" :class="isEven(cardNumber) ? 'bg-blue-600' : 'bg-green-600 ring-green-400'" class="btn-sm w-full text-gray-50 mt-3">
                   <!-- Default state -->
