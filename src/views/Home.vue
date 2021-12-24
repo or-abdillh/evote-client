@@ -163,6 +163,7 @@
       //alert(now >= start && now < finish)
       if ( now < start ) {
          [ isEventStart.value, isEventFinish.value ] = [ false, false ]
+         countDownEl.value.innerHTML = new Date(eventStart.value).toLocaleString()
       }
       //State dimulai
       else if ( now >= start && now < finish ) {
