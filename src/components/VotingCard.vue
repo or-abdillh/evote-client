@@ -120,7 +120,7 @@
          //Validation
          if (Event.passcode == passcode.value) {
          	//Send voting to server
-         	http.post('general/voting', { candidate_id: props.candidate.candidate_id }, (data, response) => {
+         	http.post('accounts/vote/' + props.candidate.candidate_id, {}, (data, response) => {
          		if (response) {
          			setTimeout(() => {
          				[ isProcess.value, isSuccess.value ] = [ false, true ]

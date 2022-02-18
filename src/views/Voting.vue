@@ -14,6 +14,7 @@
 
 <template>
    <section>
+   	<Loader :load="isLoader" />
       <div class="voting-wrapper">
          <!-- Pages info -->
          <SectionCard borderColor="border-blue-500">
@@ -43,10 +44,13 @@
    import SectionCard from '../components/SectionCard.vue'
    import VotingCard from '../components/VotingCard.vue'
    import Modal from '../components/Modal.vue'
+   import Loader from '../components/Loader.vue'
    import http from '../API/http.js'
 
    //Init store
    const store = useEventTitle()
+
+   const isLoader = ref(true)
    
    //Handler for Modal
    const showModal = ref(false)
@@ -57,8 +61,11 @@
 	
    //Get data from API
    onMounted(() => {
-   	 http.get('general/candidates', data => {
-   	   candidates.value = data.response
+   	 http.get('candidates', data => {
+   	   candidates.value = data.response.candidates
+   	   setTimeout(() => {
+   	   	isLoader.value = false
+   	   }, 1000)
    	 })
    })
 </script>

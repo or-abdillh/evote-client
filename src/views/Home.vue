@@ -14,6 +14,7 @@
 
 <template>
    <section>
+   	<Loader :load="isLoader" />
       <div class="home-wrapper">
          <!-- Welcome -->
          <SectionCard borderColor="border-blue-500">
@@ -88,42 +89,46 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, watch, reactive } from 'vue'
-    import { useRouter } from 'vue-router'
-    import { useEventTitle } from '../stores/eventTitle'
-    import { usePasscode } from '../stores/passcode'
-    import SectionCard from '../components/SectionCard.vue'
-    import countDown from '../helper/countDown.js'
-    import http from '../API/http.js'
+  import { ref, onMounted, watch, reactive } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useEventTitle } from '../stores/eventTitle'
+  import { usePasscode } from '../stores/passcode'
+  import SectionCard from '../components/SectionCard.vue'
+  import Loader from '../components/Loader.vue'
+  import countDown from '../helper/countDown.js'
+  import http from '../API/http.js'
 
-    //Routes
-    const router = useRouter()
+  //Routes
+  const router = useRouter()
+
+  //Loader
+  const isLoader = ref(true)
 
 	//Init store
 	const EventTitle = useEventTitle()
 	const EventPasscode = usePasscode()
 	
-    //Render data profile from API
-
+  //Render data profile from API
 	const profile = ref({
 		fullname: 'Fulan bin Fulan',
 		job_name: 'Dosen',
 		status_vote: 0
 	})
-
-    //Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
+	
+  //Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
 	const eventStart = ref(0)
 	const eventFinish = ref(0)
 	const count = ref(0)
 
-    onMounted(() => {
-    //Get profile
-    	http.get('general/profile', data => {
-	   	 	profile.value = data.response
+   //Get profile
+   onMounted(() => {
+   	http.get('accounts/profile', data => {
+   	 	profile.value = data.response.profile
 		})
-	//Get event
-		http.get('general/event', data => {
-			const res = data.response[0]
+	
+		//Get event
+		http.get('event', data => {
+			const res = data.response.event
 			eventStart.value = res.event_start_at
 			eventFinish.value = res.event_finish_at
 			count.value = res.count
@@ -133,8 +138,14 @@
 
 			//Save event passcode into state
 			EventPasscode.setPasscode(res.passcode)
+
+			//Trigger loader to hide
+			setTimeout(() => {
+				isLoader.value = false
+			}, 1000)
+			
 		})
-    })
+   })
    
    
    //Navigation handler to voting view
@@ -148,31 +159,29 @@
    const btnlogout = () => {
    	  //Logout from account
    	  http.get('logout', data => {
-		setTimeout(() => {
-			router.push({ name: 'login' })
-		}, 500)
-   	  })
+				setTimeout(() => {
+					router.push({ name: 'login' })
+				}, 500)
+ 		 })
    }
    
 //Handler for choose the state
 
    const chooseState = ( start, finish ) => {
-      //alert(start, finish)
+   
       //State belum dimulai
       const now = new Date().getTime()
-      //alert(now >= start && now < finish)
+      
       if ( now < start ) {
          [ isEventStart.value, isEventFinish.value ] = [ false, false ]
          countDownEl.value.innerHTML = new Date(eventStart.value).toLocaleString()
       }
       //State dimulai
       else if ( now >= start && now < finish ) {
-         //alert('mulai')
          [ isEventStart.value, isEventFinish.value ] = [ true, false ]
       }
       //State berakhir
       else {
-         //alert('akhir')
          [ isEventStart.value, isEventFinish.value ] = [ false, true ]
       }
    }

@@ -81,7 +81,7 @@
 <script setup>
    import { ref, reactive, watch, onMounted } from 'vue'
    import { useRouter } from 'vue-router'
-   import login from '../API/login.js'
+   import http from '../API/http.js'
    
    //Instance 
    const router = useRouter()
@@ -107,35 +107,35 @@
    const btnLogin = () => {
       //Handler for login API
       const afterLogin = (response, success) => {
-		setTimeout(() => {
-			//Process state
-			[ isProcess.value, isSuccess.value ] = [ true, false ]
-			          
-			//Response success
-	        localStorage.setItem('$evote-token', response.response.TOKEN)
-			if ( success ) {
-			    //Save token to localStorage
-		        
-				setTimeout(() => {
-				   
-				   //Success state
-				   [ isProcess.value, isSuccess.value ] = [ false, true ] 
-				 
-				   //Push to Home
-				   setTimeout(() => {
-				      router.push({ name: 'home' })
-				   }, 500)
-				}, 2000)
-			} else {
-				setTimeout(() => {
-					 //Fail state
-				   [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
-				}, 2000)
-			}         
-	       }, 100)
+			setTimeout(() => {
+				//Process state
+				[ isProcess.value, isSuccess.value ] = [ true, false ]
+				          
+				//Response success
+        localStorage.setItem('$evote-token', response.response.token)
+				if ( success ) {
+				    //Save token to localStorage
+			        
+					setTimeout(() => {
+					   
+					   //Success state
+					   [ isProcess.value, isSuccess.value ] = [ false, true ] 
+					 
+					   //Push to Home
+					   setTimeout(() => {
+					      router.push({ name: 'home' })
+					   }, 500)
+					}, 2000)
+				} else {
+					setTimeout(() => {
+						 //Fail state
+					   [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
+					}, 2000)
+				}         
+      }, 100)
 		}
 
-		login(formLogin, afterLogin)
+		http.post('login', formLogin, afterLogin)
 	}
    
    //Handler for Show and hide password
