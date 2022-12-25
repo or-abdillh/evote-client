@@ -129,6 +129,8 @@ const btnLogin = async () => {
          //Push to Home
          setTimeout(() => {
             router.push({ name: 'home' })
+            // location.reload()
+            // router.push({ name: 'home' })
          }, 500)
       }, 2000)
       

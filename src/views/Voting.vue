@@ -62,11 +62,7 @@ const candidates = ref(null)
 //Get data from API
 onMounted( async () => {
    try {
-      const res = await ajax.get('/user/candidate', {
-         headers: {
-            token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
-         }
-      })
+      const res = await ajax.get('/user/candidate')
       candidates.value = res?.data?.results
       setTimeout(() => {
          isLoader.value = false
