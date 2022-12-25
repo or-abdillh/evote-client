@@ -77,8 +77,8 @@
                   <!-- Personal Profile -->
                   <div class="text-left">
                      <strong>{{ profile.fullname }}</strong>
-                     <p class="font-bold text-gray-600">{{ profile.job_name }}</p>
-                     <p class="text-gray-600">{{ profile.status_vote === 1 ? 'Sudah melakukan voting' : 'Belum melakukan voting' }}</p>
+                     <p class="font-bold text-gray-600">{{ profile.job }}</p>
+                     <p class="text-gray-600">{{ profile.status === 1 ? 'Sudah melakukan voting' : 'Belum melakukan voting' }}</p>
                   </div>
                </div>
             </template>
