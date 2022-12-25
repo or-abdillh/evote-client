@@ -53,7 +53,7 @@
                <!-- Action button -->
                <div>
                   <!-- Go to vote page -->
-                  <button :disabled="!isEventStart || profile.status_vote > 0"  @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
+                  <button :disabled="!isEventStart || !profile.status"  @click="nextButtton" type="button" class="btn mb-3 text-gray-50 bg-blue-500">
                      Next
                      <i class="text-xs fa fa-chevron-right"></i>
                   </button>
@@ -89,121 +89,137 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, watch, reactive } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useEventTitle } from '../stores/eventTitle'
-  import { usePasscode } from '../stores/passcode'
-  import SectionCard from '../components/SectionCard.vue'
-  import Loader from '../components/Loader.vue'
-  import countDown from '../helper/countDown.js'
-  import http from '../API/http.js'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useEventTitle } from '../stores/eventTitle'
+import { usePasscode } from '../stores/passcode'
+import SectionCard from '../components/SectionCard.vue'
+import Loader from '../components/Loader.vue'
+import countDown from '../helper/countDown.js'
+import http from '../API/http.js'
+import ajax from '@/helper/ajax'
 
-  //Routes
-  const router = useRouter()
+//Routes
+const router = useRouter()
 
-  //Loader
-  const isLoader = ref(true)
+//Loader
+const isLoader = ref(true)
 
-	//Init store
-	const EventTitle = useEventTitle()
-	const EventPasscode = usePasscode()
-	
-  //Render data profile from API
-	const profile = ref({
-		fullname: 'Fulan bin Fulan',
-		job_name: 'Dosen',
-		status_vote: 0
-	})
-	
-  //Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
-	const eventStart = ref(0)
-	const eventFinish = ref(0)
-	const count = ref(0)
+//Init store
+const EventTitle = useEventTitle()
+const EventPasscode = usePasscode()
 
-   //Get profile
-   onMounted(() => {
-   	http.get('accounts/profile', data => {
-   	 	profile.value = data.response.profile
-		})
-	
-		//Get event
-		http.get('event', data => {
-			const res = data.response.event
-			eventStart.value = res.event_start_at
-			eventFinish.value = res.event_finish_at
-			count.value = res.count
+//Render data profile from API
+const profile = ref({
+   fullname: 'Fulan bin Fulan',
+   job_name: 'Dosen',
+   status_vote: 0
+})
 
-			//Save event title into state
-			EventTitle.setEventTitle(res.event_title)
+//Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
+const eventStart = ref(0)
+const eventFinish = ref(0)
+const count = ref(0)
 
-			//Save event passcode into state
-			EventPasscode.setPasscode(res.passcode)
+//Get profile
+onMounted( async () => {
 
-			//Trigger loader to hide
-			setTimeout(() => {
-				isLoader.value = false
-			}, 1000)
-			
-		})
-   })
-   
-   
-   //Navigation handler to voting view
-   const nextButtton = () => {
+   // Get userId from local storage
+   const userId = localStorage.getItem('evote-himati:userId') || 'null'
+
+   // Get profile
+   try {
+      const res = await ajax.get(`/user/profile/${ userId }`)
+      profile.value = res?.data?.results
+      // console.log(res?.data)
+   } catch(err) {
+      if ( err?.response ) console.log( err?.response?.data )
+   }
+
+   //Get event
+   try {
+      let res = await ajax.get('/user/event')
+      res = res?.data?.results
+
+      // Parse data
+      eventStart.value = new Date( res.start ).getTime()
+      eventFinish.value = new Date( res.end ).getTime()
+      count.value = res.hasVoted
+
+      //Save event title into state
+      EventTitle.setEventTitle(res.title)
+
+      //Save event passcode into state
+      EventPasscode.setPasscode(res.passcode)
+
+      //Trigger loader to hide
       setTimeout(() => {
-         router.push({ name: 'voting' })
-      }, 500)
+         isLoader.value = false
+      }, 1000)
+
+   } catch(err) {
+      if ( err?.response ) console.log( err?.response?.data )
    }
+})
+
+
+//Navigation handler to voting view
+const nextButtton = () => {
+   setTimeout(() => {
+      router.push({ name: 'voting' })
+   }, 500)
+}
+
+//Navigation handler for logout 
+const btnlogout = () => {
+      
+   localStorage.setItem('evote-himati:userId', '')
+   localStorage.setItem('evote-himati:token', '')
    
-   //Navigation handler for logout 
-   const btnlogout = () => {
-   	  //Logout from account
-   	  http.get('logout', data => {
-				setTimeout(() => {
-					router.push({ name: 'login' })
-				}, 500)
- 		 })
-   }
-   
+   setTimeout(() => {
+      router.push({ name: 'login' })
+   }, 500)
+}
+
 //Handler for choose the state
 
-   const chooseState = ( start, finish ) => {
-   
-      //State belum dimulai
-      const now = new Date().getTime()
-      
-      if ( now < start ) {
-         [ isEventStart.value, isEventFinish.value ] = [ false, false ]
-         countDownEl.value.innerHTML = new Date(eventStart.value).toLocaleString()
-      }
-      //State dimulai
-      else if ( now >= start && now < finish ) {
-         [ isEventStart.value, isEventFinish.value ] = [ true, false ]
-      }
-      //State berakhir
-      else {
-         [ isEventStart.value, isEventFinish.value ] = [ false, true ]
-      }
-   }
-   
-   
-   setInterval(() => {
-      //alert(eventStart)
-      chooseState(eventStart.value, eventFinish.value)
-   }, 2000)
+const chooseState = ( start, finish ) => {
 
-   //Handler for event state mulai atau belum juga berakhir
-   const isEventStart = ref(false)
-   const isEventFinish = ref(true)
-   const countDownEl = ref(null)
+   //State belum dimulai
+   const now = new Date().getTime()
    
-   //Jalankan countDown jika isEventStart true
-   const interval = setInterval(() => {
-      countDown(countDownEl.value, eventStart.value, eventFinish.value, after, interval)
-   }, 1000)
-   
-   //Create callbackk if countdown finish
-   const after = () => {
-      [ isEventFinish.value, isEventStart.value ] = [ true, false ]
+   if ( now < start ) {
+      [ isEventStart.value, isEventFinish.value ] = [ false, false ]
+      countDownEl.value.innerHTML = new Date(eventStart.value).toLocaleString()
    }
+   //State dimulai
+   else if ( now >= start && now < finish ) {
+      [ isEventStart.value, isEventFinish.value ] = [ true, false ]
+   }
+   //State berakhir
+   else {
+      [ isEventStart.value, isEventFinish.value ] = [ false, true ]
+   }
+}
+
+
+setInterval(() => {
+   //alert(eventStart)
+   chooseState(eventStart.value, eventFinish.value)
+}, 2000)
+
+//Handler for event state mulai atau belum juga berakhir
+const isEventStart = ref(false)
+const isEventFinish = ref(true)
+const countDownEl = ref(null)
+
+//Jalankan countDown jika isEventStart true
+const interval = setInterval(() => {
+   countDown(countDownEl.value, eventStart.value, eventFinish.value, after, interval)
+}, 1000)
+
+//Create callbackk if countdown finish
+const after = () => {
+   [ isEventFinish.value, isEventStart.value ] = [ true, false ]
+}
 </script>

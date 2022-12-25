@@ -79,80 +79,102 @@
 </template>
 
 <script setup>
-   import { ref } from 'vue'
-   import { useTextAlert } from '../stores/textAlert'
-   import { usePasscode } from '../stores/passcode'
-   import SectionCard from './SectionCard.vue'
-   import http from '../API/http.js'
-   
-   //Instance Stores
-   const Alert = useTextAlert()
+import { ref } from 'vue'
+import { useTextAlert } from '../stores/textAlert'
+import { usePasscode } from '../stores/passcode'
+import SectionCard from './SectionCard.vue'
+import http from '../API/http.js'
+import ajax from '@/helper/ajax'
 
-   //Get event passcode from state
-   const Event = usePasscode()
-   
-   //Define props
-   const props = defineProps({
-      cardNumber: {
-         type: Number,
-         default: 1
-      },
-      candidate: {
-      	type: Object
-      }
-   })
-   
-   //Define Emits
-   const emits = defineEmits(['processDone', 'statusOk', 'statusFail'])
-   
-   //Handler animation for button
-   const isProcess = ref(false)
-   const isSuccess = ref(false)
-   
-   //Input from user
-   const passcode = ref('')
+//Instance Stores
+const Alert = useTextAlert()
 
-   //Main handler for confirm passcode
-   const btnConfirm = () => {
-      setTimeout(() => {
-         [ isProcess.value, isSuccess.value ] = [ true, false ]
- 		   
-         //Validation
-         if (Event.passcode == passcode.value) {
-         	//Send voting to server
-         	http.post('accounts/vote/' + props.candidate.candidate_id, {}, (data, response) => {
-         		if (response) {
-         			setTimeout(() => {
-         				[ isProcess.value, isSuccess.value ] = [ false, true ]
-			            emits('processDone')
-			            emits('statusOk')
-         			}, 2000)
-         		} else {
-         			//Failed action
-         			setTimeout(() => {
-         				[ isProcess.value, isSuccess.value ] = [ false, false ]
-						emits('processDone')
-						emits('statusFail')
-						Alert.inputText(data.response)
-         			}, 2000)
-         		}
-         	})         	
-         } else {
-         	setTimeout(() => {
-         		//Failed passcode 
-				[ isProcess.value, isSuccess.value ] = [ false, false ]
-				emits('processDone')
-				emits('statusFail')
-				Alert.inputText('Maaf, passcode yang anda masukkan salah')
-         	}, 2000)
-         }
-      }, 300)
+//Get event passcode from state
+const Event = usePasscode()
+
+//Dropdown animation
+const dropDown = ref(false)
+
+//Handler to cek cardNumber is even ?
+const isEven = num => num % 2 === 0 ? true : false
+
+//Define props
+const props = defineProps({
+   cardNumber: {
+      type: Number,
+      default: 1
+   },
+   candidate: {
+      type: Object
    }
+})
 
+//Define Emits
+const emits = defineEmits(['processDone', 'statusOk', 'statusFail'])
+
+//Handler animation for button
+const isProcess = ref(false)
+const isSuccess = ref(false)
+
+//Input from user
+const passcode = ref('')
+
+//Main handler for confirm passcode
+const btnConfirm = async () => {
+   [ isProcess.value, isSuccess.value ] = [ true, false ]
+
+   if ( Event.passcode == passcode.value ) {
+      try {
+         // Get user id from local storage
+         const userId = localStorage.getItem('evote-himati:userId') || 'null'
+
+         const res = await ajax.put(`/user/vote/${ userId }/${ props.candidate.id }`)
+         if ( res?.data?.status ) {
+            setTimeout(() => {
+               [ isProcess.value, isSuccess.value ] = [ false, true ]
+               // trigger event
+               emits('processDone')
+               emits('statusOk')
+            }, 2000)
+         }
+      } catch(err) {
+         if ( err?.response ) {
+            //Failed action
+            setTimeout(() => {
+               [ isProcess.value, isSuccess.value ] = [ false, false ]
+               // trigger event
+               emits('processDone')
+               emits('statusFail')
+               Alert.inputText(err?.response?.data?.results?.name || err?.response?.data?.results )
+            }, 2000)
+         }
+      }
+   } else {
+      setTimeout(() => {
+         //Failed passcode 
+         [ isProcess.value, isSuccess.value ] = [ false, false ]
+
+         // trigger event
+         emits('processDone')
+         emits('statusFail')
+         Alert.inputText('Maaf, passcode yang anda masukkan salah')
+      }, 2000)
+   }
+   // setTimeout(() => {
+      
+   //    //Validation
+   //    if (Event.passcode == passcode.value) {
+   //       //Send voting to server
+   //       http.post('accounts/vote/' + props.candidate.candidate_id, {}, (data, response) => {
+   //          if (response) {
+   //             
+   //          } else {
+   //             
+   //          }
+   //       })         	
+   //    } else {
    
-   //Dropdown animation
-   const dropDown = ref(false)
-   
-   //Handler to cek cardNumber is even ?
-   const isEven = num => num % 2 === 0 ? true : false
+   //    }
+   // }, 300)
+}
 </script>

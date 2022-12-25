@@ -79,66 +79,66 @@
 </template>
 
 <script setup>
-   import { ref, reactive, watch, onMounted } from 'vue'
-   import { useRouter } from 'vue-router'
-   import http from '../API/http.js'
-   
-   //Instance 
-   const router = useRouter()
-   
-   //Validation form login
-   const isValidForm = ref(false)
-   const formLogin = reactive({
-      username: '',
-      password: ''
-   })
-   
-   watch(formLogin, () => {
-      if ( formLogin.username === '' || formLogin.password === '' ) isValidForm.value = false
-      else isValidForm.value = true
-   })
-   
-   //Handler for login progress
-   const isProcess = ref(false)
-   const isSuccess = ref(false)
-   const isFail = ref(false)
-   
-   //Handler for submit form login
-   const btnLogin = () => {
-      //Handler for login API
-      const afterLogin = (response, success) => {
-			setTimeout(() => {
-				//Process state
-				[ isProcess.value, isSuccess.value ] = [ true, false ]
-				          
-				//Response success
-        localStorage.setItem('$evote-token', response.response.token)
-				if ( success ) {
-				    //Save token to localStorage
-			        
-					setTimeout(() => {
-					   
-					   //Success state
-					   [ isProcess.value, isSuccess.value ] = [ false, true ] 
-					 
-					   //Push to Home
-					   setTimeout(() => {
-					      router.push({ name: 'home' })
-					   }, 500)
-					}, 2000)
-				} else {
-					setTimeout(() => {
-						 //Fail state
-					   [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
-					}, 2000)
-				}         
-      }, 100)
-		}
+import { ref, reactive, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import ajax from '@/helper/ajax'
 
-		http.post('login', formLogin, afterLogin)
-	}
-   
-   //Handler for Show and hide password
-   const showPassword = ref(false)
-   
+//Instance 
+const router = useRouter()
+
+//Handler for Show and hide password
+const showPassword = ref(false)
+
+//Validation form login
+const isValidForm = ref(false)
+
+const formLogin = reactive({
+   username: '',
+   password: ''
+})
+
+watch(formLogin, () => {
+   if ( formLogin.username === '' || formLogin.password === '' ) isValidForm.value = false
+   else isValidForm.value = true
+})
+
+//Handler for login progress
+const isProcess = ref(false)
+const isSuccess = ref(false)
+const isFail = ref(false)
+
+//Handler for submit form login
+const btnLogin = async () => {
+   try {
+      //Process state
+      [ isProcess.value, isSuccess.value ] = [ true, false ]
+
+      // Request to API
+      let res = await ajax.post('/login', formLogin)
+      res = res?.data?.results
+
+      // save token and userId into local storage
+      localStorage.setItem('evote-himati:token', res.token)
+      localStorage.setItem('evote-himati:userId', res.userId)
+
+      // success
+      setTimeout(() => { 
+         //Success state
+         [ isProcess.value, isSuccess.value ] = [ false, true ] 
+         
+         //Push to Home
+         setTimeout(() => {
+            router.push({ name: 'home' })
+         }, 500)
+      }, 2000)
+      
+   } catch(err) {
+      if ( err?.response ) {
+         setTimeout(() => {
+            //Fail state
+            [ isProcess.value, isSuccess.value, isFail.value ] = [ false, false, true ]
+         }, 2000)
+      }
+   }
+}   
 </script>
