@@ -26,7 +26,11 @@ const router = createRouter({ history: createWebHistory(process.env.BASE_URL), r
 //Navigation Guard
 router.beforeEach( async (to, from) => {
 	try {
-		await ajax.get('/user/auth')
+		await ajax.get('/user/auth', {
+			headers: {
+				token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+			}
+		})
 	} catch(err) {
 		if ( err?.response && to.name !== 'login' ) {
 			return { name: 'login' }

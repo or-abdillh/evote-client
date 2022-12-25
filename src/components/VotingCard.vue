@@ -83,7 +83,6 @@ import { ref } from 'vue'
 import { useTextAlert } from '../stores/textAlert'
 import { usePasscode } from '../stores/passcode'
 import SectionCard from './SectionCard.vue'
-import http from '../API/http.js'
 import ajax from '@/helper/ajax'
 
 //Instance Stores
@@ -128,7 +127,11 @@ const btnConfirm = async () => {
          // Get user id from local storage
          const userId = localStorage.getItem('evote-himati:userId') || 'null'
 
-         const res = await ajax.put(`/user/vote/${ userId }/${ props.candidate.id }`)
+         const res = await ajax.put(`/user/vote/${ userId }/${ props.candidate.id }`, {}, {
+            headers: {
+               token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+            }
+         })
          if ( res?.data?.status ) {
             setTimeout(() => {
                [ isProcess.value, isSuccess.value ] = [ false, true ]
@@ -160,21 +163,5 @@ const btnConfirm = async () => {
          Alert.inputText('Maaf, passcode yang anda masukkan salah')
       }, 2000)
    }
-   // setTimeout(() => {
-      
-   //    //Validation
-   //    if (Event.passcode == passcode.value) {
-   //       //Send voting to server
-   //       http.post('accounts/vote/' + props.candidate.candidate_id, {}, (data, response) => {
-   //          if (response) {
-   //             
-   //          } else {
-   //             
-   //          }
-   //       })         	
-   //    } else {
-   
-   //    }
-   // }, 300)
 }
 </script>

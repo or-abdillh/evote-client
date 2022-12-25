@@ -129,7 +129,11 @@ onMounted( async () => {
 
    // Get profile
    try {
-      const res = await ajax.get(`/user/profile/${ userId }`)
+      const res = await ajax.get(`/user/profile/${ userId }`, {
+         headers: {
+            token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+         }
+      })
       profile.value = res?.data?.results
       // console.log(res?.data)
    } catch(err) {
@@ -138,7 +142,11 @@ onMounted( async () => {
 
    //Get event
    try {
-      let res = await ajax.get('/user/event')
+      let res = await ajax.get('/user/event', {
+         headers: {
+            token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+         }
+      })
       res = res?.data?.results
 
       // Parse data
