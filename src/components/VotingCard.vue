@@ -127,7 +127,11 @@ const btnConfirm = async () => {
          // Get user id from local storage
          const userId = localStorage.getItem('evote-himati:userId') || 'null'
 
-         const res = await ajax.put(`/user/vote/${ userId }/${ props.candidate.id }`)
+         const res = await ajax.put(`/user/vote/${ userId }/${ props.candidate.id }`, {}, {
+            headers: {
+               token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+            }
+         })
          if ( res?.data?.status ) {
             setTimeout(() => {
                [ isProcess.value, isSuccess.value ] = [ false, true ]

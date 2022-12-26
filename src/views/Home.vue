@@ -96,7 +96,6 @@ import { usePasscode } from '../stores/passcode'
 import SectionCard from '../components/SectionCard.vue'
 import Loader from '../components/Loader.vue'
 import countDown from '../helper/countDown.js'
-import http from '../API/http.js'
 import ajax from '@/helper/ajax'
 
 //Routes
@@ -129,16 +128,23 @@ onMounted( async () => {
 
    // Get profile
    try {
-      const res = await ajax.get(`/user/profile/${ userId }`)
+      const res = await ajax.get(`/user/profile/${ userId }`, {
+         headers: {
+            token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+         }
+      })
       profile.value = res?.data?.results
-      // console.log(res?.data)
    } catch(err) {
       if ( err?.response ) console.log( err?.response?.data )
    }
 
    //Get event
    try {
-      let res = await ajax.get('/user/event')
+      let res = await ajax.get('/user/event', {
+         headers: {
+            token: localStorage.getItem('evote-himati:token') || 'YOUR_TOKEN_HERE'
+         }
+      })
       res = res?.data?.results
 
       // Parse data
