@@ -78,7 +78,7 @@
                   <div class="text-left">
                      <strong>{{ profile.fullname }}</strong>
                      <p class="font-bold text-gray-600">{{ profile.job }}</p>
-                     <p class="text-gray-600">{{ profile.status === 1 ? 'Sudah melakukan voting' : 'Belum melakukan voting' }}</p>
+                     <p class="text-gray-600">{{ profile.status ? 'Sudah melakukan voting' : 'Belum melakukan voting' }}</p>
                   </div>
                </div>
             </template>
@@ -111,8 +111,8 @@ const EventPasscode = usePasscode()
 //Render data profile from API
 const profile = ref({
    fullname: 'Fulan bin Fulan',
-   job_name: 'Dosen',
-   status_vote: 0
+   job: 'Dosen',
+   status: 0
 })
 
 //Get start time, finish time and get Event title, get Bnyak account yg sudah memilih 
